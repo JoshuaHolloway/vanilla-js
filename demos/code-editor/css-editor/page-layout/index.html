@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Page Layout</title>
+
+    <link rel="stylesheet" href="./styles.css" />
+    <style id="style"></style>
+  </head>
+  <body>
+    <div class="container">
+      <header class="child-1 child reset">1</header>
+      <main class="child-2 child reset">2</main>
+      <footer class="child-3 child reset">3</footer>
+    </div>
+
+    <section id="one" class="active">
+      <h2><code>flexbox</code></h2>
+      <div class="editor-container">
+        <div class="editor"></div>
+        <script>
+          const code_editor_div_1 = document.querySelector(
+            '#one > .editor-container > .editor'
+          );
+          code_editor_div_1.textContent = `.container { display: flex; flex-direction: column; }\n.container > header { height: 100px; }\n.container > main { flex-grow: 1; }\n.container > footer { height: 100px; }`;
+        </script>
+
+        <button>Apply</button>
+      </div>
+    </section>
+
+    <section id="two">
+      <h2><code>Grid</code></h2>
+      <div class="editor-container">
+        <div class="editor">
+          .container { display: grid; grid-template-rows: 100px 1fr 100px;
+          grid-template-columns: 100%; }
+        </div>
+        <script>
+          const code_editor_div_2 = document.querySelector(
+            '#two > .editor-container > .editor'
+          );
+          code_editor_div_2.textContent = `.container {\n\tdisplay: grid;\n\tgrid-template-rows: 100px 1fr 100px;\n\tgrid-template-columns: 100%;\n}`;
+        </script>
+        <button>Apply</button>
+      </div>
+    </section>
+
+    <style>
+      section {
+        position: absolute;
+        width: 500px;
+        height: 100px;
+      }
+
+      #one {
+        top: 400px;
+      }
+
+      #two {
+        top: 700px;
+      }
+    </style>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js"></script>
+
+    <!-- Change CSS programatically -->
+    <script>
+      //const editor_containers = document.querySelectorAll('.editor-container');
+      const style = document.querySelector('#style');
+      const sections = document.querySelectorAll('section');
+      const buttons = document.querySelectorAll('button');
+      const editors = document.querySelectorAll('.editor');
+      console.log(editors);
+      editors.forEach(function (editorElem, idx) {
+        const editor = ace.edit(editorElem);
+        editor.setTheme('ace/theme/monokai');
+        editor.session.setMode('ace/mode/css');
+
+        buttons[idx].addEventListener('click', () => {
+          const code = editor.getValue();
+
+          console.log('code: ', code);
+
+          style.textContent = code;
+
+          for (let i = 0; i < sections.length; ++i) {
+            if (i == idx) {
+              console.log('ADD: i: ', i);
+              sections[i].classList.add('active');
+            } else {
+              console.log('REMOVE: i: ', i);
+              sections[i].classList.remove('active');
+            }
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
